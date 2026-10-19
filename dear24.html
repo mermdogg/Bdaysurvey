@@ -1,0 +1,292 @@
+<title>Dear 24</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&family=Caveat:wght@500;700&display=swap">
+<style>
+  /* Layout: one card at a time on cream, ending in a handwritten-style letter. Always light. */
+  :root, :root[data-theme="dark"] {
+    --bg: #fbf3e8;
+    --card: #fffaf3;
+    --ink: #4a1f30;
+    --muted: #8d6470;
+    --pink-dark: #c2306a;
+    --pink-dark-ink: #fffaf3;
+    --pink-light: #f8d6e0;
+    --pink-soft: #fcebef;
+    --line: #efcdd6;
+    --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+    --font-body: "Nunito", "Segoe UI", system-ui, sans-serif;
+    --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(circle at 10% 8%, var(--pink-light) 0 80px, transparent 81px),
+                      radial-gradient(circle at 94% 26%, var(--pink-soft) 0 60px, transparent 61px),
+                      radial-gradient(circle at 82% 96%, var(--pink-light) 0 90px, transparent 91px);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.55;
+    min-height: 100%;
+  }
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding-block: 32px 48px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: 18px;
+  }
+  .brand { font-family: var(--font-hand); font-weight: 700; color: var(--pink-dark); font-size: 1.6rem; text-align: center; line-height: 1; }
+  .progress { height: 10px; border-radius: 99px; background: var(--card); border: 2px solid var(--line); overflow: hidden; }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--pink-dark); transition: width .35s ease; }
+  .card {
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 28px;
+    padding: 28px 22px;
+    box-shadow: 0 8px 0 var(--pink-light);
+    display: grid;
+    gap: 16px;
+  }
+  .step { font-family: var(--font-display); font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+  h1, h2 { font-family: var(--font-display); line-height: 1.15; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(2rem, 7vw, 2.6rem); font-weight: 800; }
+  h2 { font-size: clamp(1.35rem, 5vw, 1.65rem); font-weight: 700; }
+  p { margin: 0; }
+  .sub { color: var(--muted); }
+  .center { text-align: center; }
+  .chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .chip {
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
+    background: var(--pink-soft); border: 2px solid var(--line); border-radius: 18px;
+    padding: 12px 14px; display: flex; gap: 10px; align-items: center;
+    transition: transform .12s ease, border-color .12s ease;
+  }
+  .chip:hover { transform: translateY(-2px); border-color: var(--pink-dark); }
+  .chip:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--pink-dark); outline-offset: 2px; }
+  .chip[aria-pressed="true"] { background: var(--pink-light); border-color: var(--pink-dark); font-weight: 700; }
+  .chip .ico { font-size: 1.35rem; line-height: 1; flex: none; }
+  input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: var(--pink-soft);
+    border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; width: 100%;
+  }
+  textarea { min-height: 110px; resize: vertical; }
+  .row { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; align-items: center; }
+  .row.end { justify-content: flex-end; }
+  .btn {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; cursor: pointer;
+    border-radius: 99px; padding: 10px 22px; border: 2px solid var(--pink-dark);
+    background: var(--pink-dark); color: var(--pink-dark-ink);
+  }
+  .btn.ghost { background: transparent; color: var(--pink-dark); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .hint { font-size: .85rem; color: var(--muted); }
+  .letter {
+    background: var(--pink-soft);
+    border-radius: 18px;
+    padding: 20px 18px;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--line) 31px 32px);
+    font-family: var(--font-hand);
+    font-size: 1.45rem;
+    line-height: 32px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .note { font-size: .9rem; color: var(--muted); text-align: center; }
+  .owner { border-style: dashed; }
+  .resp { border-top: 2px dashed var(--line); padding-top: 14px; display: grid; gap: 8px; }
+  .resp:first-of-type { border-top: 0; padding-top: 0; }
+  .qa { display: grid; gap: 10px; margin: 0; }
+  .qa dt { color: var(--muted); font-size: .88rem; }
+  .qa dd { margin: 0; font-weight: 600; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .qa .key dd { color: var(--pink-dark); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <div class="brand">Dear 24</div>
+  <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+  <main id="app" class="card" aria-live="polite"></main>
+  <section id="owner" class="card owner" hidden>
+    <h2>Her answers (visible only to you)</h2>
+    <div id="ownerList"><p class="sub">No answers yet. They'll appear here once she finishes. The answers most useful for a gift are highlighted.</p></div>
+  </section>
+</div>
+
+<script>
+(() => {
+  // key: true marks the answers that point most directly at a gift (highlighted for the owner).
+  const Q = [
+    { id: "name", type: "text", title: "First, what should we call you?", placeholder: "Your name" },
+    { id: "moment", type: "long", title: "What's a moment from this past year you never want to forget?", sub: "Big or tiny.", placeholder: "" },
+    { id: "cared", type: "long", title: "When did you last feel really taken care of?", sub: "What did someone do, or say?", placeholder: "" },
+    { id: "lang", type: "one", title: "The gifts that mean the most to you are usually…", key: true, options: [
+      ["📸", "Time together, like a day out or plans made for you"],
+      ["🎁", "Something thoughtful you can keep"],
+      ["🧺", "Something you'll actually use every day"],
+      ["✉️", "Words: a letter, a note, something handwritten"],
+    ]},
+    { id: "wanted", type: "long", title: "What's something you've wanted for a while but keep putting off getting for yourself?", key: true, sub: "Everyone has one. No judgment.", placeholder: "I keep almost buying…" },
+    { id: "morning", type: "long", title: "Picture a perfect birthday morning. What's waiting for you when you wake up?", key: true, placeholder: "" },
+    { id: "more", type: "long", title: "What's one thing you want more of at 24?", sub: "Rest, adventure, a hobby, time with someone…", placeholder: "" },
+    { id: "gift", type: "long", title: "If 23-year-old you could leave one gift for 24-year-old you, what would it be?", key: true, placeholder: "" },
+    { id: "know", type: "long", title: "Is there anything you want the people who love you to know?", sub: "Optional.", placeholder: "" },
+  ];
+
+  const state = { i: 0, a: {} };
+  try { const s = JSON.parse(localStorage.getItem("dear24-draft") || "null"); if (s && typeof s.i === "number") Object.assign(state, s); } catch (e) {}
+  const saveDraft = () => { try { localStorage.setItem("dear24-draft", JSON.stringify(state)); } catch (e) {} };
+
+  const app = document.getElementById("app");
+  const bar = document.getElementById("bar");
+  const el = (tag, props = {}, kids = []) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === "class") n.className = v; else if (k === "text") n.textContent = v;
+      else if (k.startsWith("on")) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v);
+    }
+    for (const c of [].concat(kids)) if (c) n.append(c);
+    return n;
+  };
+
+  let dbP = null, userP = null;
+  function caps() {
+    if (!dbP) {
+      const c = window.claude;
+      dbP = c?.use ? c.use("db").catch(() => null) : Promise.resolve(null);
+      userP = c?.use ? c.use("user").catch(() => null) : Promise.resolve(null);
+    }
+    return Promise.all([dbP, userP]);
+  }
+
+  const answerText = (q, v) => q.type === "one" ? (typeof v === "number" && q.options[v] ? q.options[v][1] : "") : (v || "").trim();
+
+  function render() {
+    bar.style.width = Math.min(100, (state.i / Q.length) * 100) + "%";
+    app.replaceChildren();
+    if (state.i === 0 && !state.started) return renderIntro();
+    if (state.i >= Q.length) return renderLetter();
+    const q = Q[state.i];
+    const val = state.a[q.id];
+    app.append(el("div", { class: "step", text: `${state.i + 1} of ${Q.length}` }), el("h2", { text: q.title }));
+    if (q.sub) app.append(el("p", { class: "sub", text: q.sub }));
+
+    let next;
+    if (q.type === "one") {
+      const chips = el("div", { class: "chips", role: "group", "aria-label": q.title });
+      q.options.forEach(([ico, label], idx) => chips.append(el("button", {
+        class: "chip", type: "button", "aria-pressed": String(val === idx),
+        onclick: () => { state.a[q.id] = idx; state.i++; saveDraft(); render(); },
+      }, [el("span", { class: "ico", text: ico, "aria-hidden": "true" }), el("span", { text: label })])));
+      app.append(chips);
+    } else {
+      const input = q.type === "text"
+        ? el("input", { type: "text", id: "q-" + q.id, placeholder: q.placeholder || "", maxlength: "60", "aria-label": q.title })
+        : el("textarea", { id: "q-" + q.id, placeholder: q.placeholder || "", maxlength: "800", "aria-label": q.title });
+      input.value = val || "";
+      input.addEventListener("input", () => { state.a[q.id] = input.value; saveDraft(); });
+      input.addEventListener("keydown", e => { if (e.key === "Enter" && q.type === "text") { e.preventDefault(); next.click(); } });
+      app.append(input);
+      setTimeout(() => input.focus(), 0);
+    }
+
+    const back = el("button", { class: "btn ghost", type: "button", text: "Back", onclick: () => { if (state.i === 0) state.started = false; else state.i--; saveDraft(); render(); } });
+    next = el("button", { class: "btn", type: "button", text: state.i === Q.length - 1 ? "Read my note" : "Next", onclick: () => { state.i++; saveDraft(); render(); } });
+    app.append(el("div", { class: "row" }, [back, q.type === "one" ? el("span", { class: "hint", text: "Pick one to continue" }) : next]));
+  }
+
+  function renderIntro() {
+    app.append(
+      el("h1", { class: "center", text: "A few questions before 24" }),
+      el("p", { class: "sub center", text: "Nine questions about the year you've had and the one coming up. Take your time. At the end, your answers turn into a little note to yourself." }),
+      el("div", { class: "row end" }, [
+        el("button", { class: "btn", type: "button", text: "Start", onclick: () => { state.started = true; saveDraft(); render(); } }),
+      ]),
+    );
+  }
+
+  function letterText() {
+    const t = id => answerText(Q.find(q => q.id === id), state.a[id]);
+    const name = t("name");
+    const parts = [`Dear 24${name ? `, from ${name}` : ""},`];
+    if (t("moment")) parts.push(`Don't forget this year: ${t("moment")}`);
+    if (t("cared")) parts.push(`I felt taken care of when ${t("cared")}`);
+    if (t("more")) parts.push(`This year I want more ${t("more")}`);
+    if (t("morning")) parts.push(`On a perfect birthday morning I'd wake up to ${t("morning")}`);
+    if (t("wanted")) parts.push(`I've wanted this for a while: ${t("wanted")}`);
+    if (t("gift")) parts.push(`My gift from 23 to 24: ${t("gift")}`);
+    if (t("lang")) parts.push(`The gifts that mean the most to me: ${t("lang").charAt(0).toLowerCase() + t("lang").slice(1)}`);
+    if (t("know")) parts.push(t("know"));
+    parts.push("Love, me");
+    return parts.join("\n\n");
+  }
+
+  function renderLetter() {
+    bar.style.width = "100%";
+    const text = letterText();
+    const letter = el("div", { class: "letter", text });
+    const copyBtn = el("button", { class: "btn", type: "button", text: "Copy my note", onclick: async () => {
+      try { await navigator.clipboard.writeText(text); copyBtn.textContent = "Copied"; }
+      catch (e) { const r = document.createRange(); r.selectNodeContents(letter); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = "Selected, press copy"; }
+    }});
+    app.append(
+      el("div", { class: "step", text: "Your note" }),
+      letter,
+      el("p", { class: "note", text: "Send it to whoever shared this with you. They'd love to read it." }),
+      el("div", { class: "row" }, [
+        el("button", { class: "btn ghost", type: "button", text: "Edit answers", onclick: () => { state.i = 1; state.saved = false; saveDraft(); render(); } }),
+        copyBtn,
+      ]),
+    );
+    submit();
+  }
+
+  async function submit() {
+    if (state.saved) return;
+    const [db, user] = await caps();
+    if (!db || !user) return;
+    const uid = await user.id();
+    if (!uid) return;
+    const lines = Q.filter(q => q.id !== "name").map(q => [q.id, q.title, answerText(q, state.a[q.id])]);
+    const payload = { name: answerText(Q[0], state.a.name), lines, letter: letterText(), submittedAt: new Date().toISOString() };
+    try { await db.doc("answers/" + uid).set(payload); state.saved = true; saveDraft(); } catch (e) { /* the copied note is the fallback */ }
+  }
+
+  async function ownerPanel() {
+    const [db, user] = await caps();
+    if (!db || !user || !(await user.isOwner())) return;
+    document.getElementById("owner").hidden = false;
+    const box = document.getElementById("ownerList");
+    const keyIds = new Set(Q.filter(q => q.key).map(q => q.id));
+    db.collection("answers").onSnapshot(snap => {
+      if (!snap.docs.length) return;
+      box.replaceChildren();
+      snap.docs.forEach(d => {
+        const r = d.data() || {};
+        const dl = el("dl", { class: "qa" });
+        const lines = Array.isArray(r.lines) ? r.lines : [];
+        // Gift-relevant answers first.
+        [...lines.filter(l => keyIds.has(l[0])), ...lines.filter(l => !keyIds.has(l[0]))].forEach(([id, q, ans]) => {
+          if (!ans) return;
+          dl.append(el("div", { class: keyIds.has(id) ? "key" : "" }, [el("dt", { text: String(q) }), el("dd", { text: String(ans) })]));
+        });
+        const when = r.submittedAt ? new Date(r.submittedAt).toLocaleString() : "";
+        box.append(el("div", { class: "resp" }, [
+          el("h2", { text: r.name || "Someone" }),
+          el("p", { class: "hint", text: when ? "Answered " + when : "" }),
+          dl,
+        ]));
+      });
+    }, () => {});
+  }
+
+  render();
+  ownerPanel();
+})();
+</script>
