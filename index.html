@@ -1,4 +1,4 @@
-<title>Comfort Style Quiz</title>
+<title>Extremely Scientific Sunday Test</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -106,7 +106,7 @@
 </style>
 
 <div class="wrap">
-  <div class="brand">Comfort style quiz</div>
+  <div class="brand">The Extremely Scientific Sunday Test</div>
   <div class="progress" aria-hidden="true"><span id="bar"></span></div>
   <main id="app" class="card" aria-live="polite"></main>
   <section id="owner" class="card owner" hidden>
@@ -266,8 +266,8 @@
   function renderIntro() {
     app.append(
       el("div", { class: "result-badge", text: "🧸", "aria-hidden": "true" }),
-      el("h1", { class: "center", text: "What's your comfort style?" }),
-      el("p", { class: "sub center", text: "Ten quick questions, about two minutes. You'll get a short result at the end." }),
+      el("h1", { class: "center", text: "The Extremely Scientific Sunday Test" }),
+      el("p", { class: "sub center", text: "Ten quick questions, about two minutes. Results are official and not peer reviewed." }),
       el("div", { class: "row end" }, [
         el("button", { class: "btn", type: "button", text: "Start", onclick: () => { state.started = true; saveDraft(); render(); } }),
       ]),
@@ -295,7 +295,7 @@
     const trip = state.a.trip !== undefined ? Q[5].options[state.a.trip][1].toLowerCase() : "";
 
     const card = [
-      `${name ? name + "'s" : "My"} comfort style: ${style}`,
+      `${name ? name + "'s" : "My"} official Sunday type: ${style}`,
       blurb,
       scent && `Scent: ${scent}`,
       color && `Colors: ${color}`,
