@@ -18,18 +18,8 @@
     --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
     --font-body: "Nunito", "Segoe UI", system-ui, sans-serif;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #2a1a1f; --card: #362229; --ink: #f8ece2; --muted: #c9a8b2;
-      --pink-dark: #f2829f; --pink-dark-ink: #2a1a1f; --pink-light: #5c2c3c;
-      --pink-soft: #43262f; --line: #55303c; color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #2a1a1f; --card: #362229; --ink: #f8ece2; --muted: #c9a8b2;
-    --pink-dark: #f2829f; --pink-dark-ink: #2a1a1f; --pink-light: #5c2c3c;
-    --pink-soft: #43262f; --line: #55303c; color-scheme: dark;
-  }
+  /* Always light: pink and cream regardless of the viewer's theme. */
+  :root, :root[data-theme="dark"] { color-scheme: light; }
   * { box-sizing: border-box; }
   body {
     background: var(--bg);
