@@ -119,47 +119,47 @@
 (() => {
   // Each option carries a private gift hint shown only in the owner panel.
   const Q = [
-    { id: "name", type: "text", title: "What should we call you?", sub: "A nickname is fine.", placeholder: "Your name" },
-    { id: "sunday", type: "one", title: "Your ideal slow Sunday:", options: [
-      ["📚", "Reading in bed", "book, Kindle, reading light, book subscription"],
-      ["☕", "Farmers market and a good coffee", "local café gift card, nice mug, tote bag, coffee subscription"],
-      ["🛁", "A bath and a face mask", "skincare set, bath robe, spa day voucher"],
-      ["🥂", "Brunch with friends", "brunch / restaurant voucher, going-out bag"],
-      ["🎮", "Movies or games on the couch", "big blanket, game or console accessory, streaming sub"],
-      ["🥾", "A hike or a long walk", "water bottle, activewear, picnic set"],
+    { id: "name", type: "text", title: "First, what should we call you?", sub: "A nickname is fine.", placeholder: "Your name" },
+    { id: "sunday", type: "one", title: "It's Sunday and you have zero plans. You're…", options: [
+      ["📚", "Reading in bed until it's somehow 2pm", "book, Kindle, reading light, book subscription"],
+      ["☕", "Getting an overpriced iced latte and wandering around", "local café gift card, nice cup or tumbler, tote bag, coffee subscription"],
+      ["🛁", "Doing a full reset: laundry, face mask, clean sheets", "skincare set, bath robe, nice bedding, spa day voucher"],
+      ["🥂", "At brunch, catching up on the group chat news in person", "brunch / restaurant voucher, going-out bag"],
+      ["📺", "Rewatching your comfort show for the fifth time", "big blanket, streaming sub, cozy loungewear"],
+      ["🎧", "Getting your steps in with a podcast", "nice earbuds, activewear, water bottle"],
     ]},
-    { id: "scent", type: "one", title: "Which scent do you like most?", options: [
-      ["🍦", "Vanilla and other sweet scents", "gourmand candle / perfume (vanilla, caramel)"],
+    { id: "scent", type: "one", title: "Which candle would you actually buy?", options: [
+      ["🍦", "Anything vanilla or sweet", "gourmand candle / perfume (vanilla, caramel)"],
       ["🍋", "Fresh citrus", "fresh / citrus candle or body mist"],
       ["🌸", "Floral", "floral perfume, flowers or a flower subscription"],
-      ["🪵", "Woody and warm", "woody / amber candle, wax melts"],
-      ["🌊", "Ocean and sea salt", "beachy body mist, travel-themed gift"],
+      ["🪵", "Woody, like a fancy hotel lobby", "woody / amber candle, wax melts"],
+      ["🌊", "Ocean breeze", "beachy body mist, travel-themed gift"],
     ]},
-    { id: "bag", type: "many", title: "What's always in your bag?", sub: "Pick all that apply.", options: [
-      ["💄", "Lip balm or gloss", "luxury lip product set"],
+    { id: "bag", type: "many", title: "What's in your bag right now?", sub: "Pick all that apply.", options: [
+      ["💄", "At least three lip balms", "luxury lip product set"],
       ["🎧", "Headphones", "headphones / earbuds upgrade or case"],
-      ["📖", "Something to read", "book or e-reader"],
+      ["📖", "A book you're \"currently reading\"", "book or e-reader"],
       ["🍬", "Snacks", "snack box, fancy chocolate"],
-      ["💧", "A water bottle", "nice water bottle / tumbler"],
+      ["💧", "Your emotional support water bottle", "nice water bottle / tumbler"],
       ["🕶️", "Sunglasses", "new sunglasses"],
-      ["🔌", "A charger", "power bank, charging cable"],
+      ["🔋", "A charger, because your phone is at 12%", "power bank, charging cable"],
     ]},
-    { id: "treat", type: "many", title: "Which of these would you love but probably not buy for yourself?", sub: "Pick up to three.", max: 3, options: [
-      ["🧴", "Nice skincare", "premium skincare"],
-      ["🌙", "A silky pajama set", "silk / satin pajama set"],
+    { id: "treat", type: "many", title: "The payday splurge you always talk yourself out of:", sub: "Pick up to three.", max: 3, options: [
+      ["🧴", "Skincare from the nice store", "premium skincare"],
+      ["🌙", "A matching pajama set", "silk / satin pajama set"],
       ["💍", "A small piece of jewelry", "dainty necklace, ring or earrings"],
-      ["🍳", "A kitchen gadget", "kitchen gadget / cookware"],
-      ["🪴", "A big houseplant", "houseplant + nice pot"],
+      ["🍳", "That kitchen gadget all over your feed", "kitchen gadget / cookware"],
+      ["🪴", "A plant you'll try very hard to keep alive", "houseplant + nice pot"],
       ["✏️", "Nice stationery", "planner, journal, pens"],
       ["📱", "A tech upgrade", "tech accessory (phone, laptop, smart device)"],
-      ["🎟️", "Tickets or a class", "tickets or a class (pottery, cooking, dance)"],
+      ["🎟️", "Concert tickets or a fun class", "tickets or a class (pottery, cooking, dance)"],
     ]},
-    { id: "trip", type: "one", title: "You get a free weekend away. Where do you go?", options: [
+    { id: "trip", type: "one", title: "Your time off just got approved. Where are you going?", options: [
       ["🏖️", "The beach", "beach towel, travel bag, getaway voucher"],
-      ["🏡", "A cabin with a fireplace", "cozy socks, blanket, cabin stay"],
-      ["🏙️", "A big city with great food", "food tour, city weekend, restaurant gift card"],
-      ["🎤", "Wherever my favorite artist is playing", "concert tickets, merch"],
-      ["🥐", "A European city with cafés", "travel journal, luggage, trip fund"],
+      ["🏡", "A cabin with no Wi-Fi", "cozy socks, blanket, cabin stay"],
+      ["🏙️", "A city with a long list of restaurants to try", "food tour, city weekend, restaurant gift card"],
+      ["🎤", "Wherever your favorite artist is on tour", "concert tickets, merch"],
+      ["🥐", "Europe, mostly for the cafés", "travel journal, luggage, trip fund"],
     ]},
     { id: "metal", type: "one", title: "Gold or silver jewelry?", options: [
       ["✨", "Gold", "gold jewelry"],
@@ -167,29 +167,29 @@
       ["🌷", "Rose gold", "rose gold jewelry"],
       ["➖", "I don't really wear jewelry", "skip jewelry"],
     ]},
-    { id: "palette", type: "one", title: "Which colors do you gravitate toward?", options: [
+    { id: "palette", type: "one", title: "Pick your phone wallpaper colors:", options: [
       ["🩷", "Soft pinks", "pink / blush tones"],
       ["🌿", "Sage and earthy greens", "sage / earthy tones"],
       ["🤍", "Cream and neutrals", "neutral / cream tones"],
       ["🖤", "Black", "black / dark tones"],
       ["🌈", "Bright colors", "bold, colorful stuff"],
     ]},
-    { id: "keep", type: "one", title: "Which would you rather receive?", options: [
-      ["📸", "An experience, like a day out or a show", "lean toward experiences"],
-      ["🎁", "Something to keep", "lean toward physical gifts"],
-      ["🧺", "Something practical I'd use every day", "lean toward useful upgrades"],
+    { id: "keep", type: "one", title: "Which would make your week?", options: [
+      ["📸", "Plans: tickets, a day out, a nice dinner", "lean toward experiences"],
+      ["🎁", "Something cute to keep", "lean toward physical gifts"],
+      ["🧺", "Something useful you'd use every day", "lean toward useful upgrades"],
     ]},
-    { id: "obsession", type: "long", title: "What have you been into lately?", sub: "A show, a song, a hobby, anything.", placeholder: "Lately I've been into…" },
-    { id: "tape", type: "long", title: "Is there anything you've been meaning to replace?", sub: "Something worn out, broken or overdue for an upgrade.", placeholder: "" },
+    { id: "obsession", type: "long", title: "What's your current obsession?", sub: "A show, an album, a hobby, a snack.", placeholder: "Right now it's…" },
+    { id: "tape", type: "long", title: "What's something you own that's on its last legs?", sub: "The cracked, frayed or barely-working thing you keep saying you'll replace.", placeholder: "" },
   ];
 
   const STYLES = [
-    ["📚", "The Homebody", "You recharge best with a good book and nowhere to be."],
-    ["☕", "The Café Regular", "Your best days start with good coffee and a slow wander."],
-    ["🛁", "The Reset Expert", "A quiet evening to yourself is your favorite kind of plan."],
-    ["🥂", "The Host", "Your best weekends involve a long table and good company."],
-    ["🎮", "The Night-In Pro", "Comfort, snacks and something good on screen."],
-    ["🥾", "The Outdoorsy One", "Fresh air and a long walk sort everything out."],
+    ["📚", "The Homebody", "Your favorite plans are the ones that get cancelled."],
+    ["☕", "The Café Regular", "You have never met an iced latte you didn't like."],
+    ["🛁", "The Reset Expert", "Clean sheets night is basically a holiday to you."],
+    ["🥂", "The Planner", "You're the one who actually turns the group chat into plans."],
+    ["📺", "The Night-In Pro", "Comfort show, snacks, phone on do not disturb."],
+    ["🎧", "The Walker", "A long walk and a good podcast fix basically everything."],
   ];
 
   const state = { i: 0, a: {} };
