@@ -1,0 +1,395 @@
+<title>Cozy Era Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  /* Layout: one centered "sticker card" at a time, a progress ribbon on top, big tappable chips. */
+  :root {
+    --bg: #fff1f4;
+    --card: #ffffff;
+    --ink: #4a2640;
+    --muted: #8c6a80;
+    --accent: #e4527d;
+    --accent-ink: #ffffff;
+    --butter: #ffe58a;
+    --mint: #c3ead8;
+    --lilac: #e4d7ff;
+    --line: #f3cbd7;
+    --chip: #fff7f9;
+    --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+    --font-body: "Nunito", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #24131f; --card: #331c2c; --ink: #fbe8f0; --muted: #c9a6bb;
+      --accent: #ff7ca3; --accent-ink: #2a0f1d; --butter: #6b5520; --mint: #224a3b;
+      --lilac: #3e3160; --line: #4f2d44; --chip: #2b1725; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #24131f; --card: #331c2c; --ink: #fbe8f0; --muted: #c9a6bb;
+    --accent: #ff7ca3; --accent-ink: #2a0f1d; --butter: #6b5520; --mint: #224a3b;
+    --lilac: #3e3160; --line: #4f2d44; --chip: #2b1725; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(circle at 12% 8%, var(--lilac) 0 70px, transparent 71px),
+                      radial-gradient(circle at 92% 22%, var(--mint) 0 50px, transparent 51px),
+                      radial-gradient(circle at 80% 96%, var(--butter) 0 80px, transparent 81px);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.55;
+    min-height: 100%;
+  }
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding-block: 32px 48px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: 18px;
+  }
+  .brand { font-family: var(--font-display); font-weight: 700; color: var(--accent); letter-spacing: .04em; font-size: .95rem; text-align: center; }
+  .progress { height: 10px; border-radius: 99px; background: var(--card); border: 2px solid var(--line); overflow: hidden; }
+  .progress > span { display: block; height: 100%; width: 0; background: repeating-linear-gradient(45deg, var(--accent) 0 8px, color-mix(in srgb, var(--accent) 75%, var(--card)) 8px 16px); transition: width .35s ease; }
+  .card {
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 28px;
+    padding: 28px 22px;
+    box-shadow: 0 8px 0 var(--line);
+    display: grid;
+    gap: 16px;
+  }
+  .step { font-family: var(--font-display); font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+  h1, h2 { font-family: var(--font-display); line-height: 1.15; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(2rem, 7vw, 2.6rem); font-weight: 800; }
+  h2 { font-size: clamp(1.4rem, 5vw, 1.7rem); font-weight: 700; }
+  p { margin: 0; }
+  .sub { color: var(--muted); }
+  .chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .chip {
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
+    background: var(--chip); border: 2px solid var(--line); border-radius: 18px;
+    padding: 12px 14px; display: flex; gap: 10px; align-items: center;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .chip:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .chip:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .chip[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 16%, var(--chip)); border-color: var(--accent); font-weight: 700; }
+  .chip .ico { font-size: 1.35rem; line-height: 1; flex: none; }
+  input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: var(--chip);
+    border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; width: 100%;
+  }
+  textarea { min-height: 96px; resize: vertical; }
+  .row { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; cursor: pointer;
+    border-radius: 99px; padding: 10px 22px; border: 2px solid var(--accent);
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .hint { font-size: .85rem; color: var(--muted); }
+  .result-badge { justify-self: center; font-size: 3.4rem; line-height: 1; }
+  .result-name { text-align: center; color: var(--accent); }
+  .vibe-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .vibe-list li { background: var(--chip); border-radius: 12px; padding: 8px 12px; }
+  .vibe-list b { font-family: var(--font-display); }
+  .note { font-size: .9rem; color: var(--muted); text-align: center; }
+  /* owner panel */
+  .owner { border-style: dashed; }
+  .resp { border-top: 2px dashed var(--line); padding-top: 14px; display: grid; gap: 6px; }
+  .resp:first-of-type { border-top: 0; padding-top: 0; }
+  .qa { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 4px 12px; font-size: .92rem; }
+  .qa dt { color: var(--muted); }
+  .qa dd { margin: 0; }
+  .ideas { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ideas span { background: var(--mint); border-radius: 99px; padding: 3px 10px; font-size: .85rem; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <div class="brand">✿ cozy era quiz ✿</div>
+  <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+  <main id="app" class="card" aria-live="polite"></main>
+  <section id="owner" class="card owner" hidden>
+    <h2>Answers so far (only you can see this)</h2>
+    <div id="ownerList"><p class="sub">No answers yet. Once she finishes the quiz, her picks and gift ideas show up here.</p></div>
+  </section>
+</div>
+
+<script>
+(() => {
+  // Each option carries a private gift hint shown only in the owner panel.
+  const Q = [
+    { id: "name", type: "text", title: "First things first, what should we call you?", sub: "A nickname totally counts.", placeholder: "e.g. Bean" },
+    { id: "sunday", type: "one", title: "Your perfect slow Sunday looks like…", options: [
+      ["📚", "Reading in bed till noon", "book, Kindle, cozy reading light, book subscription"],
+      ["☕", "Farmers market + a fancy latte", "local café gift card, nice mug, tote bag, coffee subscription"],
+      ["🛁", "Face mask, bath, full reset", "skincare set, bath robe, spa day voucher"],
+      ["🥂", "Brunch with the girls", "brunch / restaurant voucher, cute going-out bag"],
+      ["🎮", "Movie or game marathon on the couch", "giant blanket, game or console accessory, streaming sub"],
+      ["🥾", "Outside: a hike or long walk", "water bottle, cute activewear, picnic set"],
+    ]},
+    { id: "scent", type: "one", title: "Pick a smell, any smell", options: [
+      ["🍦", "Warm vanilla & sweet stuff", "gourmand candle / perfume (vanilla, caramel)"],
+      ["🍋", "Fresh citrus & clean laundry", "fresh / citrus candle or body mist"],
+      ["🌸", "Flowers, always flowers", "floral perfume, fresh flower bouquet or subscription"],
+      ["🪵", "Woody, smoky, cozy cabin", "woody / amber candle, wax melts"],
+      ["🌊", "Salty sea air", "beachy body mist, travel-themed gift"],
+    ]},
+    { id: "bag", type: "many", title: "Your bag is never without…", sub: "Pick all that apply.", options: [
+      ["💄", "Lip balm or gloss", "luxury lip product set"],
+      ["🎧", "Headphones", "headphones / earbuds upgrade or case"],
+      ["📖", "Something to read", "book or e-reader"],
+      ["🍬", "Snacks, obviously", "snack box, fancy chocolate"],
+      ["💧", "A water bottle", "aesthetic water bottle / tumbler"],
+      ["🕶️", "Sunglasses", "new sunglasses"],
+      ["🔌", "A charger (always dying)", "power bank, cute charging cable"],
+    ]},
+    { id: "treat", type: "many", title: "A little luxury you'd never buy for yourself", sub: "Pick up to three. No guilt allowed.", max: 3, options: [
+      ["🧴", "Fancy skincare", "premium skincare"],
+      ["🌙", "Matching silky pajamas", "silk / satin pajama set"],
+      ["💍", "A dainty piece of jewelry", "dainty necklace, ring or earrings"],
+      ["🍳", "A nice kitchen gadget", "kitchen gadget / cookware"],
+      ["🪴", "A big leafy plant", "houseplant + nice pot"],
+      ["✏️", "Pretty stationery", "planner, journal, pens"],
+      ["📱", "A techy upgrade", "tech accessory (phone, laptop, smart device)"],
+      ["🎟️", "An experience: class, show, concert", "tickets or a class (pottery, cooking, dance)"],
+    ]},
+    { id: "trip", type: "one", title: "Someone hands you a free weekend away. Where to?", options: [
+      ["🏖️", "Beach, no notes", "beach towel, travel bag, getaway voucher"],
+      ["🏡", "A cabin with a fireplace", "cozy socks, blanket, cabin stay"],
+      ["🏙️", "A big city, all the food", "food tour, city weekend, restaurant gift card"],
+      ["🎤", "Wherever my favorite artist is playing", "concert tickets, merch"],
+      ["🥐", "Somewhere in Europe with cafés", "travel journal, luggage, trip fund"],
+    ]},
+    { id: "metal", type: "one", title: "Gold girl or silver girl?", options: [
+      ["✨", "Gold, forever", "gold jewelry"],
+      ["🪩", "Silver all the way", "silver jewelry"],
+      ["🌷", "Rose gold", "rose gold jewelry"],
+      ["🙅‍♀️", "I don't really wear jewelry", "skip jewelry"],
+    ]},
+    { id: "palette", type: "one", title: "Pick a color mood", options: [
+      ["🩷", "Soft pink & blush", "pink / blush tones"],
+      ["🌿", "Sage & earthy greens", "sage / earthy tones"],
+      ["🤍", "Cream, beige, clean girl", "neutral / cream tones"],
+      ["🖤", "Black, always", "black / dark tones"],
+      ["🌈", "Bright and loud", "bold, colorful stuff"],
+    ]},
+    { id: "keep", type: "one", title: "Would you rather have…", options: [
+      ["📸", "A memory (a day out, a trip, a show)", "lean toward experiences"],
+      ["🎁", "A keepsake you can hold onto", "lean toward physical gifts"],
+      ["💸", "Honestly? Something practical I'd use daily", "lean toward useful upgrades"],
+    ]},
+    { id: "obsession", type: "long", title: "What's been on repeat for you lately?", sub: "A show, a song, a hobby, a snack. Anything.", placeholder: "Lately I can't stop…" },
+    { id: "tape", type: "long", title: "What's something in your life currently held together by vibes and tape?", sub: "That one thing that really needs replacing.", placeholder: "My poor…" },
+  ];
+
+  const ERAS = {
+    sunday: {
+      0: ["📚", "Soft Bookworm Era", "Blankets, a good plot twist and nowhere to be."],
+      1: ["☕", "Café Hopper Era", "You romanticize every errand and it's working."],
+      2: ["🛁", "Self-Care Princess Era", "Glowing, hydrated and unbothered."],
+      3: ["🥂", "Main Character Era", "Brunch reservations and group chats on fire."],
+      4: ["🎮", "Cozy Gremlin Era", "Snacks, screens and absolute peace."],
+      5: ["🥾", "Fresh Air Era", "Sunlight, steps and good playlists."],
+    },
+  };
+
+  const state = { i: 0, a: {} };
+  try { const s = JSON.parse(localStorage.getItem("cozy-era-draft") || "null"); if (s && typeof s.i === "number") Object.assign(state, s); } catch (e) {}
+  const saveDraft = () => { try { localStorage.setItem("cozy-era-draft", JSON.stringify(state)); } catch (e) {} };
+
+  const app = document.getElementById("app");
+  const bar = document.getElementById("bar");
+  const el = (tag, props = {}, kids = []) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === "class") n.className = v; else if (k === "text") n.textContent = v;
+      else if (k.startsWith("on")) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v);
+    }
+    for (const c of [].concat(kids)) if (c) n.append(c);
+    return n;
+  };
+
+  let dbP = null, userP = null;
+  function caps() {
+    if (!dbP) {
+      const c = window.claude;
+      dbP = c?.use ? c.use("db").catch(() => null) : Promise.resolve(null);
+      userP = c?.use ? c.use("user").catch(() => null) : Promise.resolve(null);
+    }
+    return Promise.all([dbP, userP]);
+  }
+
+  function render() {
+    bar.style.width = Math.min(100, (state.i / Q.length) * 100) + "%";
+    app.replaceChildren();
+    if (state.i === 0 && !state.started) return renderIntro();
+    if (state.i >= Q.length) return renderResult();
+    const q = Q[state.i];
+    const val = state.a[q.id];
+    app.append(el("div", { class: "step", text: `Question ${state.i + 1} of ${Q.length}` }), el("h2", { text: q.title }));
+    if (q.sub) app.append(el("p", { class: "sub", text: q.sub }));
+
+    let next;
+    if (q.type === "text" || q.type === "long") {
+      const input = q.type === "text"
+        ? el("input", { type: "text", id: "q-" + q.id, placeholder: q.placeholder || "", maxlength: "60", "aria-label": q.title })
+        : el("textarea", { id: "q-" + q.id, placeholder: q.placeholder || "", maxlength: "600", "aria-label": q.title });
+      input.value = val || "";
+      input.addEventListener("input", () => { state.a[q.id] = input.value; saveDraft(); });
+      input.addEventListener("keydown", e => { if (e.key === "Enter" && q.type === "text") { e.preventDefault(); next.click(); } });
+      app.append(input);
+      setTimeout(() => input.focus(), 0);
+    } else {
+      const chips = el("div", { class: "chips", role: "group", "aria-label": q.title });
+      q.options.forEach(([ico, label], idx) => {
+        const sel = q.type === "one" ? val === idx : (val || []).includes(idx);
+        chips.append(el("button", {
+          class: "chip", type: "button", "aria-pressed": String(sel),
+          onclick: () => {
+            if (q.type === "one") { state.a[q.id] = idx; saveDraft(); state.i++; render(); return; }
+            let arr = (state.a[q.id] || []).slice();
+            if (arr.includes(idx)) arr = arr.filter(x => x !== idx);
+            else { if (q.max && arr.length >= q.max) arr.shift(); arr.push(idx); }
+            state.a[q.id] = arr; saveDraft(); render();
+          },
+        }, [el("span", { class: "ico", text: ico, "aria-hidden": "true" }), el("span", { text: label })]));
+      });
+      app.append(chips);
+    }
+
+    const back = el("button", { class: "btn ghost", type: "button", text: "Back", onclick: () => { if (state.i === 0) state.started = false; else state.i--; saveDraft(); render(); } });
+    next = el("button", { class: "btn", type: "button", text: state.i === Q.length - 1 ? "See my era ✿" : "Next", onclick: () => { state.i++; saveDraft(); render(); } });
+    if (q.type === "one" && val === undefined) next.disabled = true;
+    if (q.type === "many" && !(val || []).length) next.disabled = true;
+    app.append(el("div", { class: "row" }, [back, q.type === "one" && val === undefined ? el("span", { class: "hint", text: "Tap one to continue" }) : next]));
+  }
+
+  function renderIntro() {
+    app.append(
+      el("div", { class: "result-badge", text: "🧸", "aria-hidden": "true" }),
+      el("h1", { text: "Which cozy era are you in right now?" }),
+      el("p", { class: "sub", text: "Ten quick questions, about two minutes. No wrong answers, only vibes. At the end you get your era and a little vibe card." }),
+      el("div", { class: "row" }, [
+        el("span", { class: "hint", text: "♡ made with love" }),
+        el("button", { class: "btn", type: "button", text: "Let's go", onclick: () => { state.started = true; saveDraft(); render(); } }),
+      ]),
+    );
+  }
+
+  function pick(q, idx) { return q.options[idx]; }
+  function summaryLines() {
+    const lines = [];
+    for (const q of Q) {
+      const v = state.a[q.id];
+      if (q.id === "name" || v === undefined || v === "" || (Array.isArray(v) && !v.length)) continue;
+      if (q.type === "one") lines.push([q.title, pick(q, v)[1]]);
+      else if (q.type === "many") lines.push([q.title, v.map(i => pick(q, i)[1]).join(", ")]);
+      else lines.push([q.title, v]);
+    }
+    return lines;
+  }
+
+  function renderResult() {
+    const sun = state.a.sunday ?? 0;
+    const [badge, era, blurb] = ERAS.sunday[sun];
+    const name = (state.a.name || "").trim();
+    const scent = state.a.scent !== undefined ? Q[2].options[state.a.scent][1].toLowerCase() : "";
+    const color = state.a.palette !== undefined ? Q[7].options[state.a.palette][1].toLowerCase() : "";
+    const trip = state.a.trip !== undefined ? Q[5].options[state.a.trip][1].toLowerCase() : "";
+
+    const status = el("p", { class: "note", text: "" });
+    const card = [
+      `✿ ${name ? name + "'s" : "My"} cozy era: ${era} ${badge}`,
+      blurb,
+      scent && `Smells like: ${scent}`,
+      color && `Color mood: ${color}`,
+      trip && `Dream weekend: ${trip}`,
+    ].filter(Boolean).join("\n");
+
+    const copyBtn = el("button", { class: "btn", type: "button", text: "Copy my vibe card", onclick: async () => {
+      try { await navigator.clipboard.writeText(card); copyBtn.textContent = "Copied ♡"; }
+      catch (e) { const r = document.createRange(); r.selectNodeContents(list); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = "Selected, press copy"; }
+    }});
+    const list = el("ul", { class: "vibe-list" }, [
+      scent && el("li", {}, [el("b", { text: "Smells like: " }), scent]),
+      color && el("li", {}, [el("b", { text: "Color mood: " }), color]),
+      trip && el("li", {}, [el("b", { text: "Dream weekend: " }), trip]),
+    ]);
+    app.append(
+      el("div", { class: "step", text: "Your result" }),
+      el("div", { class: "result-badge", text: badge, "aria-hidden": "true" }),
+      el("h1", { class: "result-name", text: era }),
+      el("p", { class: "sub", text: (name ? name + ", " : "") + blurb.charAt(0).toLowerCase() + blurb.slice(1) }),
+      list,
+      el("p", { class: "note", text: "Send your vibe card to whoever sent you this quiz so they can see your era ♡" }),
+      el("div", { class: "row" }, [
+        el("button", { class: "btn ghost", type: "button", text: "Retake", onclick: () => { state.i = 0; state.started = false; state.a = {}; state.saved = false; saveDraft(); render(); } }),
+        copyBtn,
+      ]),
+      status,
+    );
+    bar.style.width = "100%";
+    submit();
+  }
+
+  async function submit() {
+    if (state.saved) return;
+    const [db, user] = await caps();
+    if (!db || !user) return;
+    const uid = await user.id();
+    if (!uid) return;
+    const payload = { answers: state.a, lines: summaryLines(), name: (state.a.name || "").trim(), submittedAt: new Date().toISOString() };
+    try { await db.doc("answers/" + uid).set(payload); state.saved = true; saveDraft(); } catch (e) { /* the vibe card is the fallback */ }
+  }
+
+  function ideasFor(a) {
+    const out = [];
+    for (const q of Q) {
+      const v = a[q.id];
+      if (q.type === "one" && typeof v === "number" && q.options[v]) out.push(q.options[v][2]);
+      if (q.type === "many" && Array.isArray(v)) v.forEach(i => q.options[i] && out.push(q.options[i][2]));
+    }
+    return out.filter(x => x !== "skip jewelry");
+  }
+
+  async function ownerPanel() {
+    const [db, user] = await caps();
+    if (!db || !user || !(await user.isOwner())) return;
+    const sec = document.getElementById("owner");
+    const box = document.getElementById("ownerList");
+    sec.hidden = false;
+    db.collection("answers").onSnapshot(snap => {
+      if (!snap.docs.length) return;
+      box.replaceChildren();
+      snap.docs.forEach(d => {
+        const r = d.data() || {};
+        const a = r.answers || {};
+        const dl = el("dl", { class: "qa" });
+        (Array.isArray(r.lines) ? r.lines : []).forEach(([q, ans]) => dl.append(el("dt", { text: String(q) }), el("dd", { text: String(ans) })));
+        const ideas = el("div", { class: "ideas" }, ideasFor(a).map(t => el("span", { text: t })));
+        const when = r.submittedAt ? new Date(r.submittedAt).toLocaleString() : "";
+        box.append(el("div", { class: "resp" }, [
+          el("h2", { text: (r.name || "Someone") }),
+          el("p", { class: "hint", text: when ? "Answered " + when : "" }),
+          el("p", { class: "step", text: "Gift ideas from her picks" }), ideas,
+          el("p", { class: "step", text: "All answers" }), dl,
+        ]));
+      });
+    }, () => {});
+  }
+
+  render();
+  ownerPanel();
+})();
+</script>
